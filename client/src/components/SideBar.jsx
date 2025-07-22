@@ -1,7 +1,7 @@
 import React from 'react'
 import assets from '../assets/assets'
 import {useNavigate} from 'react-router-dom'
-import { AuthContext } from '../../context/authContext'
+import { AuthContext } from '../../context/AuthContext'
 import { useContext } from 'react'
 import { ChatContext } from '../../context/ChatContext'
 import { useState } from 'react'
