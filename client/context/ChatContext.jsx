@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { useState } from "react";
 import { createContext } from "react";
-import { AuthContext } from "./authContext";
+import { AuthContext } from "./AuthContext";
 import { useEffect } from "react";
 
 export const ChatContext=createContext();
