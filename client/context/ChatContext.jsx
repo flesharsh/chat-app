@@ -3,6 +3,7 @@ import { useState } from "react";
 import { createContext } from "react";
 import { AuthContext } from "./AuthContext";
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 export const ChatContext=createContext();
 
@@ -12,7 +13,7 @@ export const ChatProvider=({children})=>{
     const [selectedUser,setSelectedUser]=useState(null);
     const [unseenMessages,setUnseenMessages]=useState({});
 
-    const {socket,axios}=useContext(AuthContext);
+    const {socket,axios,token}=useContext(AuthContext);
 
     // fucntion to get all users for sidebar
     const getUsers=async()=>{
@@ -78,9 +79,37 @@ export const ChatProvider=({children})=>{
         return ()=>unsubscribeFromMessages();
     },[socket,selectedUser])
 
+    // function to delete message
+const deleteMessage = async (messageId, otherUserId) => {
+    try {
+        const { data } = await axios.delete(`/api/messages/delete/${messageId}/${otherUserId}`,
+                                            {
+                                                headers: {
+                                                Authorization: `Bearer ${token}`
+                                                }
+                                            }
+                                            );
+        if (data.success) {
+            setMessages((prevMessages) => prevMessages.filter((msg) => msg._id !== messageId));
+            setUnseenMessages((prevUnseenMessages) => {
+                const updatedUnseenMessages = { ...prevUnseenMessages };
+                if (updatedUnseenMessages[otherUserId]) {
+                    updatedUnseenMessages[otherUserId] = updatedUnseenMessages[otherUserId] - 1;
+                    if (updatedUnseenMessages[otherUserId] <= 0) delete updatedUnseenMessages[otherUserId];
+                }
+                return updatedUnseenMessages;
+            });
+        } else {
+            toast.error(data.message);
+        }
+    } catch (error) {
+        toast.error(error.message);
+    }
+}
 
 
-    const value={ messages,users,selectedUser,getUsers,setMessages,sendMessage,setSelectedUser,unseenMessages,setUnseenMessages,getMessages }
+
+    const value={ messages,users,selectedUser,getUsers,setMessages,sendMessage,setSelectedUser,unseenMessages,setUnseenMessages,getMessages,deleteMessage }
 
 
     return <ChatContext.Provider value={value}>

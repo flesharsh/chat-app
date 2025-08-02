@@ -89,3 +89,22 @@ export const sendMessage=async(req,res)=>{
         res.json({success:true,message:error.message});
     }
 }
+
+// delete a message 
+export const deleteMessage = async (req, res) => {
+    try {
+        const { messageId, otherUserId } = req.params; 
+        await Message.findByIdAndDelete(messageId);
+        const myId = req.user._id;
+        const messages = await Message.find({
+            $or: [
+                { senderId: myId, recieverId: otherUserId },
+                { senderId: otherUserId, recieverId: myId },
+            ]
+        });
+        res.json({ success: true, messages });
+    } catch (error) {
+        console.error(error.message);
+        res.json({ success: false, message: error.message });
+    }
+}
