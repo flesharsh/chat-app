@@ -29,10 +29,10 @@ const ChatContainer = () => {
       toast.error("select an image file");
     }
     const reader=new FileReader();
+    reader.readAsDataURL(file);
     reader.onloadend=async()=>{
       await sendMessage({image:reader.result})
     }
-    reader.readAsDataURL(file);
     e.target.value="";
   }
 

@@ -24,7 +24,6 @@ const ProfilePage = () => {
     reader.readAsDataURL(selectedImg);
     reader.onload=async()=>{
       const base64Image=reader.result;
-      console.log(base64Image);
       await updateProfile({profilePic:base64Image,fullName:name,bio});
       navigate('/');
     }

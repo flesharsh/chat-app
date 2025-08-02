@@ -21,7 +21,6 @@ export const ChatProvider=({children})=>{
             if(data.success){
                 setUsers(data.users);
                 setUnseenMessages(data.unseenMessages);
-
             }
         } catch (error) {
             toast.error(error.message);

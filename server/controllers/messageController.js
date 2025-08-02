@@ -43,8 +43,7 @@ export const getMessages=async(req,res)=>{
         res.json({success:true,messages});
     } catch (error) {
         console.error(error.message);
-        res.json({success:true,message:error.message});
-        
+        res.json({success:true,message:error.message}); 
     }
 }
 
@@ -56,7 +55,7 @@ export const markMessageAsSeen=async(req,res)=>{
         await Message.findByIdAndUpdate(id,{seen:true});
         res.json({success:true});
     } catch (error) {
-          console.error(error.message);
+        console.error(error.message);
         res.json({success:true,message:error.message});
     }
 }
