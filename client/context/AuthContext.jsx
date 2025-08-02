@@ -103,7 +103,7 @@ export const AuthProvider=({children})=>{
 
 
  const value={
-    axios,authUser,onlineUsers,socket,login,logout,updateProfile
+    axios,authUser,onlineUsers,socket,login,logout,updateProfile,token
  }
  return <AuthContext.Provider value={value}>
          {children}
